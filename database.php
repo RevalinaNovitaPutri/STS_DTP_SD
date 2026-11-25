@@ -1,12 +1,20 @@
 <?php
 $host = 'localhost';
+$db   = 'db_laporan_fasilitas';
 $user = 'root';
 $pass = '';
-$db   = 'db_laporan_fasilitas'; 
+$charset = 'utf8mb4';
 
-$conn = mysqli_connect($host, $user, $pass, $db);
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
 
-if (!$conn) {
-    die("Koneksi database gagal: " . mysqli_connect_error());
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 ?>
